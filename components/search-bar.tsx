@@ -1,6 +1,7 @@
 "use client"
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Input } from "./ui/input";
+import { useDebounceCallback } from "usehooks-ts";
 
 export function SearchBar(){
 
@@ -9,6 +10,8 @@ export function SearchBar(){
 	const pathname = usePathname()
 
 	const searchParams = useSearchParams()
+
+	const debounce = useDebounceCallback(handleSearchTitle, 500)
 
 
 	const title = searchParams.get('title') ?? ""
@@ -34,7 +37,7 @@ export function SearchBar(){
 		<Input 
 			placeholder="Search title here..." 
 			className="my-5"
-			onChange={(e) => handleSearchTitle(e.target.value)}
+			onChange={(e) => debounce(e.target.value)}
 			defaultValue={title}
 		/>
 		);
